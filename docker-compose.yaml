@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  dk_application_nginx:
+    container_name: ct_application_nginx
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/var/www/html
+      - ./conf/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - dk_application_php
+  dk_application_php:
+    container_name: ct_application_php
+    build: .
+    image: php_mysqli
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./code:/var/www/html
+      - ./conf/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    environment:
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
+    depends_on:
+      - dk_application_mysql
+  dk_application_mysql:
+    image: "mysql:5.7"
+    container_name: ct_application_mysql
+    ports:
+      - "3306:3306"
+    environment:
+        MYSQL_DATABASE: mydatabase
+        MYSQL_USER: user_application
+        MYSQL_PASSWORD: asdfasdf
+        MYSQL_ROOT_PASSWORD: asdfasdf
+

@@ -1,0 +1,6 @@
+{
+    "phpunit.command": "docker exec -t ct_application_php /bin/sh -c",
+    "phpunit.paths": {
+        "${workspaceFolder}/code": "/var/www/html",
+    },
+}
