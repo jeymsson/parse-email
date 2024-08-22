@@ -16,7 +16,6 @@ install:
 	docker exec -it ct_application_php cp .env.example .env
 	docker exec -it ct_application_php php artisan key:generate
 	docker exec -it ct_application_php php artisan cache:clear
-	docker exec -it ct_application_node npm install
 
 .PHONY: remigrate
 remigrate:
