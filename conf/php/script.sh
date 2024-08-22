@@ -10,16 +10,10 @@ echo "Iniciando o PHP-FPM..."
 # Aguarda o PHP-FPM iniciar
 sleep 5
 
-# Executa as migrações com o Artisan
-echo "Executando deploy..."
-composer install
-php artisan migrate
-php artisan db:seed
-
 # Mantém o contêiner em execução
 echo "Contêiner em execução."
-php artisan schedule:work &
+# php artisan schedule:work &
 
 # Mantém o script em execução para manter o contêiner ativo
-# tail -f /dev/null
+tail -f /dev/null
 # tail -f /dev/stderr

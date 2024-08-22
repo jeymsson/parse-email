@@ -24,16 +24,16 @@ services:
     environment:
       XDEBUG_MODE: debug
       XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
-    depends_on:
-      - dk_application_mysql
-  dk_application_mysql:
-    image: "mysql:5.7"
-    container_name: ct_application_mysql
-    ports:
-      - "3306:3306"
-    environment:
-        MYSQL_DATABASE: mydatabase
-        MYSQL_USER: user_application
-        MYSQL_PASSWORD: asdfasdf
-        MYSQL_ROOT_PASSWORD: asdfasdf
+    # depends_on:
+    #   - dk_application_mysql
+  # dk_application_mysql:
+  #   image: "mysql:5.7"
+  #   container_name: ct_application_mysql
+  #   ports:
+  #     - "3304:3306"
+  #   environment:
+  #       MYSQL_DATABASE: mydatabase
+  #       MYSQL_USER: user_application
+  #       MYSQL_PASSWORD: asdfasdf
+  #       MYSQL_ROOT_PASSWORD: asdfasdf
 

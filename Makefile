@@ -15,14 +15,18 @@ install:
 	docker exec -it ct_application_php composer install
 	docker exec -it ct_application_php cp .env.example .env
 	docker exec -it ct_application_php php artisan key:generate
-	docker exec -it ct_application_php php artisan cache:clear
 
 .PHONY: remigrate
 remigrate:
 	docker exec -it ct_application_php php artisan migrate:fresh
+	docker exec -it ct_application_php php artisan cache:clear
 	docker exec -it ct_application_php php artisan db:seed
 	echo ""
 	echo "Banco recriado"
+
+.PHONY: schedule
+schedule:
+	docker exec -it ct_application_php nohup php artisan schedule:work > /dev/null 2>&1 &
 
 
 .PHONY: start

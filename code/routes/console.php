@@ -13,4 +13,4 @@ Artisan::command('app:parse-email', function () {
 	$emailService = new EmailService;
 	$emailService->parseEmail();
 	$this->comment('Email parsed.');
-})->purpose('Parse email')->everyMinute();
+})->purpose('Parse email')->hourly();

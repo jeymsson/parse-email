@@ -14,11 +14,11 @@ class successful_emails extends Seeder
     public function run(): void
     {
 		// DB::beginTransaction();
-        DB::statement('DROP TABLE IF EXISTS `successful_emails`;');
+        DB::statement('DROP TABLE IF EXISTS mydatabase.successful_emails;');
 
         // Criar a tabela
         DB::statement('
-            CREATE TABLE `successful_emails` (
+            CREATE TABLE mydatabase.successful_emails (
                 `id` int NOT NULL AUTO_INCREMENT,
                 `affiliate_id` mediumint NOT NULL,
                 `envelope` text NOT NULL,
