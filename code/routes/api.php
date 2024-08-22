@@ -15,3 +15,5 @@ Route::put('Update/{email}', [EmailController::class, 'update']);
 Route::post('Store', [EmailController::class, 'store']);
 Route::delete('DeleteByID/{email}', [EmailController::class, 'destroy']);
 Route::get('ParseEmail', [EmailController::class, 'parseEmail']);
+
+Route::apiResource('email', EmailController::class);

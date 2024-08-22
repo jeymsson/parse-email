@@ -5,15 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Email;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use App\Services\EmailService;
 
 class EmailController extends Controller
 {
+	public function __construct()
+	{
+		// $this->middleware('auth');
+		$this->emailService = new EmailService;
+	}
+
+	private $emailService;
+
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index() : Collection
 	{
-		return Email::all()->whereNotIn('timestamp', 0);
+		return $this->emailService->getAll();
 	}
 
 	/**
@@ -27,13 +36,9 @@ class EmailController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request) : Collection
+	public function store(Request $request) : Email
 	{
-		$data = $request->all();
-		$data['raw_text'] = $data['raw_text'] ?? '';
-		$data['timestamp'] = strtotime(now());
-		$email = Email::create($data);
-		return $email;
+		return $this->emailService->store($request);
 	}
 
 	/**
@@ -41,29 +46,15 @@ class EmailController extends Controller
 	 */
 	public function show(Email $email) : Collection
 	{
-		return Email::find($email)->whereNotIn('timestamp', 0);
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 */
-	public function edit(Email $email)
-	{
-		//
+		return $this->emailService->show($email);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, Email $email) : Collection
+	public function update(Request $request, Email $email) : Email
 	{
-		$data = $request->all();
-		$data['raw_text'] = $data['raw_text'] ?? '';
-		$data['timestamp'] = strtotime(now());
-		$email->update(
-			$data
-		);
-		return $email;
+		return $this->emailService->update($request, $email);
 	}
 
 	/**
@@ -71,24 +62,12 @@ class EmailController extends Controller
 	 */
 	public function destroy(Email $email)
 	{
-		$email->update(
-			['timestamp' => 0]
-		);
-		return $email;
+		return $this->emailService->softDelete($email);
 	}
 
 	public function parseEmail()
     {
-        $emails = Email::all()->where('raw_text', '')->whereNotIn('timestamp', 0);
-
-		foreach ($emails as $key => $value) {
-			$id = $value['id'];
-			$texto = preg_split('/\n\s*\n/', $emails[$key]['email'])[1];
-			$email = Email::find($id);
-			$email->update(['raw_text' => $texto]);
-		}
-
-		return $emails;
+		return $this->emailService->parseEmail();
     }
 
 }

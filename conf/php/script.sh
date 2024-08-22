@@ -16,10 +16,10 @@ composer install
 php artisan migrate
 php artisan db:seed
 
-
 # Mantém o contêiner em execução
 echo "Contêiner em execução."
+php artisan schedule:work &
 
 # Mantém o script em execução para manter o contêiner ativo
 # tail -f /dev/null
-tail -f /dev/stderr
+# tail -f /dev/stderr
