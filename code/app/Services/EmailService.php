@@ -55,7 +55,10 @@ class EmailService
 
 		foreach ($emails as $key => $value) {
 			$id = $value['id'];
-			$texto = preg_split('/\n\s*\n/', $emails[$key]['email'])[1];
+			$texto = preg_split('/\n\s*\n/', $emails[$key]['email'])[1] ?? '';
+			$texto = str_replace(['\r\n', '\r', '\n', '<br>', '<br/>', '<br />'], '\\n', $texto);
+			$texto = strip_tags($texto);
+
 			$email = Email::find($id);
 			$email->update(['raw_text' => $texto]);
 		}
